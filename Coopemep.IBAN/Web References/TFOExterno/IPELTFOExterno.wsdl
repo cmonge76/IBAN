@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://pel.com/webservices/TFO/IPELTFOExterno" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://pel.com/webservices/TFO/IPELTFOExterno" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://pel.com/webservices/TFO/IPELTFOExterno">
+      <s:element name="ServicioDisponible">
+        <s:complexType />
+      </s:element>
+      <s:element name="ServicioDisponibleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ServicioDisponibleResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerInformacionCuenta">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cuentaCliente" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="idcliente" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerInformacionCuentaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerInformacionCuentaResult" type="tns:InformacionCuenta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InformacionCuenta">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodMoneda" type="tns:Moneda" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomCliente" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodMotivoRechazo" type="s:short" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="Moneda">
+        <s:list>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="Colones" />
+              <s:enumeration value="Dolares" />
+              <s:enumeration value="Euros" />
+            </s:restriction>
+          </s:simpleType>
+        </s:list>
+      </s:simpleType>
+      <s:element name="Enviar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="transferencia" type="tns:Transferencia" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Transferencia">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodEntidadOrigen" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="CuentaSinpeOrigen" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodMotivo" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodMoneda" type="tns:Moneda" />
+          <s:element minOccurs="0" maxOccurs="1" name="CuentaCliente" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Monto" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDOrigen" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomOrigen" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Servicio" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IDDestino" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CodReferencia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descripcion" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TransferenciaEnviada">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Transferencia">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="CodEntidadDestino" type="s:short" />
+              <s:element minOccurs="1" maxOccurs="1" name="CodEstado" type="tns:EstadoOperacion" />
+              <s:element minOccurs="1" maxOccurs="1" name="CodMotivoRechazo" type="s:short" />
+              <s:element minOccurs="1" maxOccurs="1" name="FecEnvio" type="s:dateTime" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="EstadoOperacion">
+        <s:list>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="NoExiste" />
+              <s:enumeration value="Rechazada" />
+              <s:enumeration value="Autorizada" />
+            </s:restriction>
+          </s:simpleType>
+        </s:list>
+      </s:simpleType>
+      <s:element name="EnviarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EnviarResult" type="tns:Respuesta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Respuesta">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodEstado" type="tns:EstadoOperacion" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodMotivoRechazo" type="s:short" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Consultar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="codReferencia" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultarResult" type="tns:TransferenciaEnviada" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ServicioDisponibleSoapIn">
+    <wsdl:part name="parameters" element="tns:ServicioDisponible" />
+  </wsdl:message>
+  <wsdl:message name="ServicioDisponibleSoapOut">
+    <wsdl:part name="parameters" element="tns:ServicioDisponibleResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerInformacionCuentaSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerInformacionCuenta" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerInformacionCuentaSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerInformacionCuentaResponse" />
+  </wsdl:message>
+  <wsdl:message name="EnviarSoapIn">
+    <wsdl:part name="parameters" element="tns:Enviar" />
+  </wsdl:message>
+  <wsdl:message name="EnviarSoapOut">
+    <wsdl:part name="parameters" element="tns:EnviarResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultarSoapIn">
+    <wsdl:part name="parameters" element="tns:Consultar" />
+  </wsdl:message>
+  <wsdl:message name="ConsultarSoapOut">
+    <wsdl:part name="parameters" element="tns:ConsultarResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IPELTFOExternoSoap">
+    <wsdl:operation name="ServicioDisponible">
+      <wsdl:input message="tns:ServicioDisponibleSoapIn" />
+      <wsdl:output message="tns:ServicioDisponibleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerInformacionCuenta">
+      <wsdl:input message="tns:ObtenerInformacionCuentaSoapIn" />
+      <wsdl:output message="tns:ObtenerInformacionCuentaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Enviar">
+      <wsdl:input message="tns:EnviarSoapIn" />
+      <wsdl:output message="tns:EnviarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Consultar">
+      <wsdl:input message="tns:ConsultarSoapIn" />
+      <wsdl:output message="tns:ConsultarSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IPELTFOExternoSoap" type="tns:IPELTFOExternoSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ServicioDisponible">
+      <soap:operation soapAction="http://pel.com/webservices/TFO/IPELTFOExterno/ServicioDisponible" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerInformacionCuenta">
+      <soap:operation soapAction="http://pel.com/webservices/TFO/IPELTFOExterno/ObtenerInformacionCuenta" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Enviar">
+      <soap:operation soapAction="http://pel.com/webservices/TFO/IPELTFOExterno/Enviar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Consultar">
+      <soap:operation soapAction="http://pel.com/webservices/TFO/IPELTFOExterno/Consultar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="IPELTFOExternoSoap12" type="tns:IPELTFOExternoSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ServicioDisponible">
+      <soap12:operation soapAction="http://pel.com/webservices/TFO/IPELTFOExterno/ServicioDisponible" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerInformacionCuenta">
+      <soap12:operation soapAction="http://pel.com/webservices/TFO/IPELTFOExterno/ObtenerInformacionCuenta" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Enviar">
+      <soap12:operation soapAction="http://pel.com/webservices/TFO/IPELTFOExterno/Enviar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Consultar">
+      <soap12:operation soapAction="http://pel.com/webservices/TFO/IPELTFOExterno/Consultar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IPELTFOExterno">
+    <wsdl:port name="IPELTFOExternoSoap" binding="tns:IPELTFOExternoSoap">
+      <soap:address location="http://sinpe-1/PEL.WS.Externo.SINPE.IBAN/IPELTFOExterno.asmx" />
+    </wsdl:port>
+    <wsdl:port name="IPELTFOExternoSoap12" binding="tns:IPELTFOExternoSoap12">
+      <soap12:address location="http://sinpe-1/PEL.WS.Externo.SINPE.IBAN/IPELTFOExterno.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
